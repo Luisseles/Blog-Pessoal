@@ -70,24 +70,23 @@ public class UsuarioControllerTest {
 
 	@Test
 	@Order(3)
-	@DisplayName("Alterar um Usuário")
+	@DisplayName("Atualizar um usuário")
 	public void deveAtualizarUmUsuario() {
 
-		Optional<Usuario> usuarioCreate = usuarioService.cadastraUsuario(new Usuario(0L, "Juliana Andrews",
-				"juliana_andrews@gmail.com", "juliana123", "https://i.imgur.com/FETvs2O.jpg"));
+		Optional<Usuario> usuarioCreate = usuarioService.cadastraUsuario(new Usuario(0L, "Maria Aparecidade",
+				"maria@gmail.com", "mariazinha", "https://i.imgur.com/FETvs2O.jpg"));
 
-		Usuario usuarioUpdate = new Usuario(usuarioCreate.get().getId(), "Juliana Andrews Ramos",
-				"juliana_ramos@email.com", "juliana123", "https://i.imgur.com/FETvs2O.jpg");
+		Usuario usuarioUpdate = new Usuario(usuarioCreate.get().getId(), "Maria Aparecida", "marialves@gmail.com",
+				"mariazinha", "https://i.imgur.com/FETvs2O.jpg");
 
 		HttpEntity<Usuario> requisicao = new HttpEntity<Usuario>(usuarioUpdate);
 
-		ResponseEntity<Usuario> resposta = testRestTemplate.withBasicAuth("root", "root")
-				.exchange("/usuarios/atualizar", HttpMethod.PUT, requisicao, Usuario.class);
+		ResponseEntity<Usuario> resposta = testRestTemplate.withBasicAuth("root", "root").exchange("/usuario/atualizar",
+				HttpMethod.PUT, requisicao, Usuario.class);
 
 		assertEquals(HttpStatus.OK, resposta.getStatusCode());
 		assertEquals(usuarioUpdate.getNome(), resposta.getBody().getNome());
 		assertEquals(usuarioUpdate.getUsuario(), resposta.getBody().getUsuario());
-
 	}
 
 	@Test
@@ -103,7 +102,7 @@ public class UsuarioControllerTest {
 
 		ResponseEntity<String> resposta = testRestTemplate.withBasicAuth("root", "root").exchange("/usuarios/all",
 				HttpMethod.GET, null, String.class);
-		
+
 		assertEquals(HttpStatus.OK, resposta.getStatusCode());
 
 	}
