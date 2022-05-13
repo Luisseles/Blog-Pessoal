@@ -30,6 +30,21 @@ public class UsuarioService {
 		// e por ultimo, salvo o usuario com a senha já criptografada no banco de dados
 		return Optional.of(repository.save(usuario));
 	};
+	
+public Optional <Usuario> atualizarUsuario(Usuario usuario) {
+		
+		// Checa se o id já existe no banco de dados antes de fazer a atualização 
+		if (repository.findById(usuario.getId()).isPresent()) {
+			/* Senão criptografar de novo, vai mandar ela sem a criptografia aí
+			 * vai dar erro por que o sistema não entende, não estará no padrão 
+			 * necessário. */
+			usuario.setSenha(criptografarSenha(usuario.getSenha()));
+			
+			// Aí salva a senha criptografada
+			return Optional.of(repository.save(usuario));
+		}
+		return Optional.empty();
+}
 
 	private String criptografarSenha(String senha) {
 
